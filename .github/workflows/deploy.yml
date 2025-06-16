@@ -19,8 +19,23 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Build Mule application
-        run: mvn clean package
+      - name: Create Maven settings.xml
+        run: |
+          mkdir -p ~/.m2
+          cat <<EOF > ~/.m2/settings.xml
+          <settings>
+            <servers>
+              <server>
+                <id>cloudhub2</id>
+                <username>${{ secrets.ANYPOINT_USERNAME }}</username>
+                <password>${{ secrets.ANYPOINT_PASSWORD }}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+
+      - name: Build Mule Application
+        run: mvn clean package --settings ~/.m2/settings.xml
 
       - name: Install Anypoint CLI
         run: npm install -g anypoint-cli-v4
@@ -30,7 +45,7 @@ jobs:
           anypoint-cli-v4 config set client_id ${{ secrets.ANYPOINT_CLIENT_ID }}
           anypoint-cli-v4 config set client_secret ${{ secrets.ANYPOINT_CLIENT_SECRET }}
           anypoint-cli-v4 config set organization ${{ secrets.ANYPOINT_ORG_ID }}
-          anypoint-cli-v4 config set environment ${{ secrets.ANYPOINT_ENV_ID }}
+          anypoint-cli-v4 config set environment Sandbox  # Change if needed
 
       - name: Deploy to CloudHub 2.0
         run: |
@@ -42,6 +57,6 @@ jobs:
             --workers=1 \
             --workerType=MICRO \
             --region=us-east-2 \
-            --target=${{ secrets.ANYPOINT_TARGET_ID }} \
-            --environment=${{ secrets.ANYPOINT_ENV_ID }} \
+            --target=CH2 \
+            --environment=Sandbox \
             --organization=${{ secrets.ANYPOINT_ORG_ID }}

@@ -34,14 +34,12 @@
 				<configuration>
 					<runtimeFabricDeployment>
 						<uri>https://anypoint.mulesoft.com</uri>
-						<server>cloudhub2</server> <!-- Optional if using username/password -->
-						<username>chaithu16_06_25</username>
-						<password>Chaithu@516</password>
+						<server>cloudhub2</server> <!-- Reference to settings.xml credentials -->
 						<applicationName>simple-demo-chaithu2</applicationName>
 						<environment>Sandbox</environment>
-						<target>CH2</target> <!-- Important: Indicates CloudHub 2.0 -->
+						<target>CH2</target> <!-- CloudHub 2.0 Target -->
 						<replicas>1</replicas>
-						<runtimeVersion>4.4.0</runtimeVersion> <!-- or your target version -->
+						<runtimeVersion>4.4.0</runtimeVersion>
 						<region>us-east-2</region>
 						<properties>
 							<key>value</key>
@@ -49,6 +47,8 @@
 					</runtimeFabricDeployment>
 				</configuration>
 			</plugin>
+
+
 
 		</plugins>
 	</build>
