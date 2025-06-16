@@ -32,24 +32,21 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<runtimeFabricDeployment>
+					<cloudHub2Deployment>
 						<uri>https://anypoint.mulesoft.com</uri>
-						<server>cloudhub2</server> <!-- Reference to settings.xml credentials -->
+						<server>cloudhub2</server>
 						<applicationName>simple-demo-chaithu2</applicationName>
 						<environment>Sandbox</environment>
-						<target>CH2</target> <!-- CloudHub 2.0 Target -->
+						<target>CH2</target>
 						<replicas>1</replicas>
 						<runtimeVersion>4.4.0</runtimeVersion>
 						<region>us-east-2</region>
 						<properties>
 							<key>value</key>
 						</properties>
-					</runtimeFabricDeployment>
+					</cloudHub2Deployment>
 				</configuration>
 			</plugin>
-
-
-
 		</plugins>
 	</build>
 
