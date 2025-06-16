@@ -37,10 +37,10 @@
 						<server>cloudhub2</server>
 						<applicationName>simple-demo-chaithu2</applicationName>
 						<environment>Sandbox</environment>
-						<target>CH2</target>
+						<target>Shared Space</target>   <!-- ✅ Correct target -->
 						<replicas>1</replicas>
 						<runtimeVersion>4.4.0</runtimeVersion>
-						<region>us-east-2</region>
+						<region>us-east-2</region>     <!-- ✅ Correct for US East (Ohio) -->
 						<properties>
 							<key>value</key>
 						</properties>
