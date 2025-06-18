@@ -41,6 +41,7 @@ jobs:
               </server>
             </servers>
           </settings>" > ~/.m2/settings.xml
+
       - name: Build JAR
         run: mvn clean package -DmuleDeploy
 
@@ -69,16 +70,14 @@ jobs:
               </server>
             </servers>
           </settings>" > ~/.m2/settings.xml
-      - name: Build & Deploy Mule App
-  run: |
-    mvn -X deploy -DmuleDeploy -DskipMunitTests \
-      -Danypoint.username=${{ secrets.ANYPOINT_CLIENT_ID }} \
-      -Danypoint.password=${{ secrets.ANYPOINT_CLIENT_SECRET }} \
-      -Danypoint.platform.client_id=${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }} \
-      -Danypoint.platform.client_secret=${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }} \
-      -Danypoint.businessGroup=${{ secrets.ANYPOINT_BUSINESS_GROUP }} \
-      -Denv=${{ secrets.ANYPOINT_ENV }} \
-      -Dappname=${{ secrets.APP_NAME }}
+
+      - name: Deploy to dev
+        run: |
+          mvn deploy -DmuleDeploy -DskipMunitTests \
+          -Danypoint.businessGroup=a62f6236-0b02-4e5f-a8eb-dc5e37aedb12 \
+          -Denv="${{ secrets.ENV }}" \
+          -Dappname="${{ secrets.APP_NAME }}"
+
   deployuat:
     needs: deploydev
     runs-on: ubuntu-latest
@@ -104,6 +103,7 @@ jobs:
               </server>
             </servers>
           </settings>" > ~/.m2/settings.xml
+
       - name: Deploy to uat
         run: |
           mvn deploy -DmuleDeploy -DskipMunitTests \
