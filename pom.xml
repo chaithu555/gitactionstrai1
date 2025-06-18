@@ -4,9 +4,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.mycompany</groupId>
+	<groupId>a62f6236-0b02-4e5f-a8eb-dc5e37aedb12</groupId>
 	<artifactId>gitactions</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<packaging>mule-application</packaging>
 
 	<name>gitactions</name>
@@ -32,24 +32,39 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<cloudHub2Deployment>
+					<cloudhub2Deployment>
 						<uri>https://anypoint.mulesoft.com</uri>
-						<server>cloudhub2</server>
-						<applicationName>simple-demo-chaithu2</applicationName>
-						<environment>Sandbox</environment>
-						<target>Shared Space</target>   <!-- ✅ Correct target -->
+						<provider>MC</provider>
+						<muleVersion>4.9.0</muleVersion>
+						<server>anypoint-exchange-v3</server>
+						<connectedAppClientId>${anypoint.username}</connectedAppClientId>
+						<connectedAppClientSecret>${anypoint.password}</connectedAppClientSecret>
+						<connectedAppGrantType>client_credentials</connectedAppGrantType>
+						<businessGroupId>${anypoint.businessGroup}</businessGroupId>
+						<environment>${env}</environment>
+						<target>DemoSpace</target>
+						<applicationName>${appname}</applicationName>
 						<replicas>1</replicas>
-						<runtimeVersion>4.4.0</runtimeVersion>
-						<region>us-east-2</region>     <!-- ✅ Correct for US East (Ohio) -->
+						<vCores>0.1</vCores>
+						<deploymentSettings>
+        						<http>
+            							<inbound>
+                							<publicUrl>https://deploy-cloudhub2.sirichat.com</publicUrl>
+            							</inbound>
+        						</http>
+        						<lastMileSecurity>false</lastMileSecurity>
+        						<forwardSslSession>false</forwardSslSession>
+        						<generateDefaultPublicUrl>false</generateDefaultPublicUrl>
+    						</deploymentSettings>
 						<properties>
-							<key>value</key>
+							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
 						</properties>
-					</cloudHub2Deployment>
+					</cloudhub2Deployment>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.mule.connectors</groupId>
@@ -64,6 +79,14 @@
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
+	<distributionManagement>
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Corporate Repository</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
 
 	<repositories>
 		<repository>
