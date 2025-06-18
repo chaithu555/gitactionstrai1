@@ -56,7 +56,7 @@ jobs:
 
         run: | 
 
-          mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests \ 
+          mvn deploy --settings .settings/settings.xml -DskipMunitTests \ 
 
           -Danypoint.username="${{ secrets.USER }}" \ 
 
@@ -100,7 +100,7 @@ jobs:
 
       run: | 
 
-        mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests -DmuleDeploy \ 
+        mvn deploy --settings .settings/settings.xml -DskipMunitTests -DmuleDeploy \ 
 
         -Danypoint.username="${{ secrets.USER }}" \ 
 
@@ -152,7 +152,7 @@ jobs:
 
       run: | 
 
-        mvn deploy --settings .settings/org.eclipse.core.resources.prefs -DskipMunitTests -DmuleDeploy \ 
+        mvn deploy --settings .settings/settings.xml -DskipMunitTests -DmuleDeploy \ 
 
         -Danypoint.username="${{ secrets.USER }}" \ 
 
