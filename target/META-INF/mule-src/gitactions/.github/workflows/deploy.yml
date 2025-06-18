@@ -1,0 +1,62 @@
+name: Deploy to CloudHub 2.0
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Create Maven settings.xml
+        run: |
+          mkdir -p ~/.m2
+          cat <<EOF > ~/.m2/settings.xml
+          <settings>
+            <servers>
+              <server>
+                <id>cloudhub2</id>
+                <username>${{ secrets.ANYPOINT_USERNAME }}</username>
+                <password>${{ secrets.ANYPOINT_PASSWORD }}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+
+      - name: Build Mule Application
+        run: mvn clean package --settings ~/.m2/settings.xml
+
+      - name: Install Anypoint CLI
+        run: npm install -g anypoint-cli-v4
+
+      - name: Authenticate to Anypoint
+        run: |
+          anypoint-cli-v4 config set client_id ${{ secrets.ANYPOINT_CLIENT_ID }}
+          anypoint-cli-v4 config set client_secret ${{ secrets.ANYPOINT_CLIENT_SECRET }}
+          anypoint-cli-v4 config set organization ${{ secrets.ANYPOINT_ORG_ID }}
+          anypoint-cli-v4 config set environment Sandbox  # Change if needed
+
+      - name: Deploy to CloudHub 2.0
+        run: |
+          FILE_NAME=$(ls target/*.jar | head -n 1)
+          anypoint-cli-v4 runtime-mgr cloudhub2 applications deploy \
+            --name=simple-demo-chaithu2 \
+            --file="$FILE_NAME" \
+            --runtimeVersion=4.4.0 \
+            --workers=1 \
+            --workerType=MICRO \
+            --region=us-east-2 \
+            --target=CH2 \
+            --environment=Sandbox \
+            --organization=${{ secrets.ANYPOINT_ORG_ID }}
